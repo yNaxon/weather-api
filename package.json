@@ -5,11 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon -r dotenv/config src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon -r dotenv/config src/app.ts"
   },
   "author": "Yonatan Naxon <yonatan@naxon.co.il>",
-  "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^16.11.3",
