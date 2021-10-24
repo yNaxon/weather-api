@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import { AccuweatherHttpClient } from './accuweather';
 import { AccuweatherLocationRepository } from './location';
 import { AccuweatherForcastRepository } from './forcast';
+import { AccuweatherError } from './accuweather/accuweather-error';
 
 const app = express();
 const port = 3000;
@@ -38,9 +39,9 @@ app.get('/:locationId', async (req, res, next) => {
   try {
     const { locationId } = req.params;
     const repository = new AccuweatherLocationRepository(accuweather);
-    
+
     const location = await repository.getById(locationId);
-  
+
     res.status(200)
       .json({
         data: location,
@@ -66,8 +67,21 @@ app.get('/:locationId/forcast', async (req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-  const stautsCode = error.status || error.statusCode || error.response?.status || 500;
-  const message = error.message;
+  if (!(error instanceof AccuweatherError)) {
+    next(error);
+  }
+  
+  console.error(error);
+
+  res.status(502).json({
+    error: "Service unavailable. Please try again later",
+  });
+});
+
+app.use((error, req, res, next) => {
+  console.error(error);
+  const stautsCode = 500;
+  const message = "An unknown error uccoured";
 
   res.status(stautsCode).json({
     error: message
