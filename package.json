@@ -2,8 +2,9 @@
   "name": "weather-api",
   "version": "1.0.0",
   "description": "Weather app api",
-  "main": "index.js",
+  "main": "build/app.js",
   "scripts": {
+    "serve": "NODE_ENV=production node build/app.js",
     "build": "tsc",
     "dev": "nodemon -r dotenv/config src/app.ts"
   },
